@@ -1,9 +1,6 @@
 import { SafeAreaView } from 'react-native';
+import tw from 'twrnc';
 
 export const Container = ({ children }: { children: React.ReactNode }) => {
-  return <SafeAreaView className={styles.container}>{children}</SafeAreaView>;
-};
-
-const styles = {
-  container: 'flex flex-1 p-6',
+  return <SafeAreaView style={tw`flex flex-1 p-6`}>{children}</SafeAreaView>;
 };
