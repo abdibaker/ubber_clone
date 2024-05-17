@@ -3,7 +3,7 @@ import { observer } from '@legendapp/state/react';
 import { Icon } from '@rneui/themed';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, Image, Text, TouchableOpacity } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import tw from 'twrnc';
 
@@ -75,20 +75,22 @@ export default observer(() => {
           horizontal
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={tw`pl-6 pb-8 pt-4 pr-2 bg-gray-200 m-2 h-64 ${!hasLocation || item.id !== '1' ? 'opacity-30' : ''}`}
+              style={tw`pl-6 pb-8 pt-4 pr-2 bg-gray-200 m-2 h-64`}
               disabled={!hasLocation || item.id !== '1'}
               onPress={() => router.navigate(item.screen)}>
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: 120, height: 120, resizeMode: 'contain' }}
-              />
-              <Text style={tw`mt-2 font-semibold text-lg`}>{item.title}</Text>
-              <Icon
-                name="arrowright"
-                type="antdesign"
-                color="white"
-                style={tw`p-2 bg-black rounded-full w-10 h-10 mt-4`}
-              />
+              <View style={tw`${!hasLocation || item.id !== '1' ? 'opacity-20' : ''}`}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: 120, height: 120, resizeMode: 'contain' }}
+                />
+                <Text style={tw`mt-2 font-semibold text-lg`}>{item.title}</Text>
+                <Icon
+                  name="arrowright"
+                  type="antdesign"
+                  color="white"
+                  style={tw`p-2 bg-black rounded-full w-10 h-10 mt-4`}
+                />
+              </View>
             </TouchableOpacity>
           )}
         />
