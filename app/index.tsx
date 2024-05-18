@@ -24,7 +24,7 @@ const options = [
   },
 ];
 
-interface Location {
+export interface Location {
   lat: number;
   lng: number;
 }
