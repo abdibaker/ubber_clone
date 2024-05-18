@@ -1,16 +1,13 @@
-import { observable } from '@legendapp/state';
-import { observer } from '@legendapp/state/react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, Text, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import tw from 'twrnc';
 
-import { Location } from '~/app/index';
+import useNavStore from '~/stores/navStore';
 
-export const $destination = observable<{ location: Location; description: string }>();
-
-export default observer(() => {
+export default function NavigateCard() {
   const navigation = useNavigation<any>();
+  const setDestination = useNavStore((s) => s.setDestination);
   return (
     <SafeAreaView style={tw`flex-1  bg-white`}>
       <Text style={tw`text-center py-5 text-xl`}>{getGreeting()}, sonny</Text>
@@ -23,10 +20,7 @@ export default observer(() => {
           placeholder="Where To"
           onPress={(data, details = null) => {
             if (!details) return;
-            $destination.set({
-              location: details.geometry.location,
-              description: data.description,
-            });
+            setDestination(details.geometry.location, data.description);
             navigation.navigate('rideOptionCard');
           }}
           minLength={2}
@@ -54,7 +48,7 @@ export default observer(() => {
       </View>
     </SafeAreaView>
   );
-});
+}
 
 function getGreeting() {
   const time = new Date().getHours();

@@ -1,13 +1,11 @@
-import { observable } from '@legendapp/state';
-import { observer } from '@legendapp/state/react';
 import { Icon } from '@rneui/themed';
 import { router } from 'expo-router';
-import { useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import tw from 'twrnc';
 
 import { Container } from '~/components/Container';
+import useNavStore from '~/stores/navStore';
 
 const options = [
   {
@@ -24,15 +22,10 @@ const options = [
   },
 ];
 
-export interface Location {
-  lat: number;
-  lng: number;
-}
+export default function Home() {
+  const origin = useNavStore((s) => s.origin);
+  const setOrigin = useNavStore((s) => s.setOrigin);
 
-export const $origin = observable<{ location: Location; description: string }>();
-
-export default observer(() => {
-  const [hasLocation, setHasLocation] = useState(false);
   return (
     <>
       <Container>
@@ -50,11 +43,7 @@ export default observer(() => {
           placeholder="Where From"
           onPress={(data, details = null) => {
             if (!details) return;
-            $origin.set({
-              location: details.geometry.location,
-              description: data.description,
-            });
-            setHasLocation(true);
+            setOrigin(details.geometry.location, data.description);
           }}
           minLength={2}
           query={{
@@ -76,9 +65,9 @@ export default observer(() => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={tw`pl-6 pb-8 pt-4 pr-2 bg-gray-200 m-2 h-64`}
-              disabled={!hasLocation || item.id !== '1'}
+              disabled={!origin || item.id !== '1'}
               onPress={() => router.navigate(item.screen)}>
-              <View style={tw`${!hasLocation || item.id !== '1' ? 'opacity-20' : ''}`}>
+              <View style={tw`${!origin || item.id !== '1' ? 'opacity-20' : ''}`}>
                 <Image
                   source={{ uri: item.image }}
                   style={{ width: 120, height: 120, resizeMode: 'contain' }}
@@ -97,4 +86,4 @@ export default observer(() => {
       </Container>
     </>
   );
-});
+}

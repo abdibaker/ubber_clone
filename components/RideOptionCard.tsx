@@ -1,10 +1,9 @@
-import { observer } from '@legendapp/state/react';
 import { Text } from 'react-native';
 
-export default observer(() => {
+export default function RideOptionCard() {
   return (
     <>
       <Text>RideOptionCard</Text>
     </>
   );
-});
+}
